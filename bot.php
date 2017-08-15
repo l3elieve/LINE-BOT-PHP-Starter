@@ -44,7 +44,7 @@ if (!is_null($events['events'])) {
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 			
-			if(curl_exec($ch) . "\r\n" == "ชื่อไร"){
+			if($ch == "ชื่อไร"){
 				
 				$result = "พลอย";	
 					
