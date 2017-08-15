@@ -1,22 +1,32 @@
 <?php
+
 $access_token = 'tzVW45uFHGH8TXaJo2mQpceEQFi7RcEZC3edZYFbbS02sE9xWU5nyqP7AW6Yykwfrf1iBxGuPaydQSChnhIv03X1kv72OkyW1rwBShXxnvZtwlsnEWRq4fO8oFHDKvJM6Yg0CFc4Uu3HCSBfbz4A/gdB04t89/1O/w1cDnyilFU=';
 
 // Get POST body content
 $content = file_get_contents('php://input');
+
 // Parse JSON
 $events = json_decode($content, true);
+
 // Validate parsed JSON data
 if (!is_null($events['events'])) {
-	
+
 	// Loop through each event
 	foreach ($events['events'] as $event) {
-		
+
 		// Reply only when message sent is in 'text' format
 		if ($event['type'] == 'message' && $event['message']['type'] == 'text') {
-			
+
 			// Get text sent
-			$text = $event['message']['text'];
-			
+			if($event['message']['text'] == "ชื่อไร"){
+
+				$text = "พลอย";	
+
+			}else{
+
+				$text = $event['message']['text'];
+			}
+		
 			// Get replyToken
 			$replyToken = $event['replyToken'];
 
@@ -28,12 +38,12 @@ if (!is_null($events['events'])) {
 
 			// Make a POST Request to Messaging API to reply to sender
 			$url = 'https://api.line.me/v2/bot/message/reply';
-			
+
 			$data = [
 				'replyToken' => $replyToken,
 				'messages' => [$messages],
 			];
-			
+
 			$post = json_encode($data);
 			$headers = array('Content-Type: application/json', 'Authorization: Bearer ' . $access_token);
 
@@ -43,20 +53,13 @@ if (!is_null($events['events'])) {
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-			
-			if($ch == "ชื่อไร"){
-				
-				$result = "พลอย";	
-					
-			}else{
-				
-				$result = curl_exec($ch);
-			}
-			
+			$result = curl_exec($ch);
+
 			curl_close($ch);
 
 			echo $result . "\r\n";
 		}
 	}
 }
+
 echo "OK";
