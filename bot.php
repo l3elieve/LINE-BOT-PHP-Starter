@@ -20,7 +20,7 @@ if (!is_null($events['events'])) {
 			// Get text sent
 			if($event['message']['text'] == "ชื่อไร"){
 
-				$text = "พลอย";	
+				$text = "พลอยจ้า";	
 
 			}else{
 
